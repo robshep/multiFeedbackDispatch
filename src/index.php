@@ -21,7 +21,7 @@ class Category extends \Illuminate\Database\Eloquent\Model {
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
-$config['dbpath']   = getenv("DB_PATH") ?? "../dev.sqlite";
+$config['dbpath']   = getenv("DB_PATH") ?  getenv("DB_PATH") : "../dev.sqlite";
 
 
 $app = new \Slim\App(["settings" => $config]);
