@@ -1,0 +1,59 @@
+<?php 
+
+include "header.phtml";
+
+?>
+
+<?php if( isset($success) ): ?>
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-success" role="alert">
+                <?= $success ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="row marketing">
+
+    <div class="col-md-12">
+        <form method="post">
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="who">Name (optional)</label>
+                        <input type="text" class="form-control" name="who" id="who" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="inc">Incident Ref (optional)</label>
+                        <input type="text" class="form-control" id="inc" name="inc" placeholder="Enter Incident Ref">
+                    </div>
+                </div>
+            </div>
+
+            <?php foreach( $categories as  $cat): ?>
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="<?=$cat->id;?>"><?= $cat->name;?></label>
+                        <textarea class="form-control" name="<?=$cat->id;?>" id="<?=$cat->id;?>" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <?php endforeach; ?>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+   
+
+</div>
+
+<?php
+
+include "footer.phtml";
+
+?>

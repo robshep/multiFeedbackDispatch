@@ -1,0 +1,79 @@
+<?php 
+
+include "header.phtml";
+
+?>
+
+<?php if( isset($success) ): ?>
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-success" role="alert">
+                <?= $success ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="row marketing">
+
+    <div class="col-md-12">
+        <form method="post">
+
+            <?php foreach($categories as $category): ?>
+
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="id_<?= $category->id ?>">id</label>
+                        <input type="text" class="form-control" name="id_<?= $category->id ?>" id="id_<?= $category->id ?>" placeholder="Enter id" value="<?= $category->id ?>">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="name_<?= $category->id ?>">name</label>
+                        <input type="text" class="form-control" name="name_<?= $category->id ?>" id="name_<?= $category->id ?>" placeholder="Enter name" value="<?= $category->name ?>">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="email_<?= $category->id ?>">email</label>
+                        <input type="email" class="form-control" name="email_<?= $category->id ?>" id="email_<?= $category->id ?>" placeholder="Enter email" value="<?= $category->email ?>">
+                    </div>
+                </div>
+            </div>
+
+            <?php endforeach; ?>
+
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="id_new">id</label>
+                        <input type="text" class="form-control" name="id_new" id="id_new" placeholder="Enter id">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="name_new">name</label>
+                        <input type="text" class="form-control" name="name_new" id="name_new" placeholder="Enter name">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="email_new">email</label>
+                        <input type="email" class="form-control" name="email_new" id="email_new" placeholder="Enter email">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+   
+
+</div>
+
+<?php
+
+include "footer.phtml";
+
+?>
