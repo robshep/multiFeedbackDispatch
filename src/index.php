@@ -109,13 +109,14 @@ $app->post("/", function (Request $request, Response $response) {
 
     $data = $request->getParsedBody();
 
-    $who = trim(filter_var($data['who'], FILTER_SANITIZE_STRING));
+    $who = trim($data['who']);
     if($who == null || $who == ''){ $who = 'Anon'; }
-    $inc = trim(filter_var($data['inc'], FILTER_SANITIZE_STRING));
+    $inc = trim($data['inc']);
     if($inc == null || $inc == ''){ $inc = 'Not Provided'; }
 
     foreach($categories as $category){
-        $log_msg = trim(filter_var($data[$category->id], FILTER_SANITIZE_STRING));
+        $log_msg = trim($data[$category->id]);
+
         if( $log_msg != null && $log_msg != ''){
             $entry = Entry::create(['category' => $category->id, 'incident' => $inc, 'who' => $who, 'msg' => $log_msg]);
             $entry->save();
