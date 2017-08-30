@@ -26,6 +26,15 @@ $config['dbpath']   = getenv("DB_PATH") ?  getenv("DB_PATH") : "../dev.sqlite";
 
 $app = new \Slim\App(["settings" => $config]);
 
+$app->add(new \Slim\Middleware\HttpBasicAuthentication([
+    "path" => ["/setup", "/list"],
+    "realm" => "Protected",
+    "secure" => false,
+    "users" => [
+        "admin" => "fantail"
+    ]
+]));
+
 $container = $app->getContainer();
 $container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/templates/");
 
@@ -43,12 +52,12 @@ $container['db'] = function ($container) {
     return $capsule;
 };
 
-$app->get("/setup/hibbedyjibbedybibbedysquibbedy", function(Request $request, Response $response){
+$app->get("/setup", function(Request $request, Response $response){
     $this->get('db')->table('category');
     $response = $this->view->render($response, "categories.phtml", [ 'categories' => Category::all() ]);
 });
 
-$app->post("/setup/hibbedyjibbedybibbedysquibbedy", function(Request $request, Response $response){
+$app->post("/setup", function(Request $request, Response $response){
     $this->get('db')->table('category');
     $categories = Category::all();
     $data = $request->getParsedBody();
@@ -91,7 +100,7 @@ $app->post("/setup/hibbedyjibbedybibbedysquibbedy", function(Request $request, R
         $new_cat->save();
     }
     
-    return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . '/setup/hibbedyjibbedybibbedysquibbedy');
+    return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . '/setup');
     
 });
 
