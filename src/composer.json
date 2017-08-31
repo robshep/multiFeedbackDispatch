@@ -4,6 +4,7 @@
         "slim/php-view": "^2.2",
         "illuminate/database": "~5.1",
         "phpmailer/phpmailer": "^6.0",
-        "tuupola/slim-basic-auth": "^2.2"
+        "tuupola/slim-basic-auth": "^2.2",
+        "vlucas/phpdotenv": "^2.4"
     }
 }

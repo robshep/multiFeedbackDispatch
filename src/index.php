@@ -19,6 +19,11 @@ class Category extends \Illuminate\Database\Eloquent\Model {
     public $incrementing = false;
 }
 
+# use DotEnv to load a .env file 
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+$dotenv->required(['DB_PATH', 'ADMIN_PASSWORD', 'MAIL_FROM', 'APP_NAME']);
+
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 $config['dbpath']   = getenv("DB_PATH") ?  getenv("DB_PATH") : "../dev.sqlite";
