@@ -27,7 +27,8 @@ $dotenv->required(['DB_PATH', 'ADMIN_PASSWORD', 'MAIL_FROM', 'APP_NAME']);
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 $config['dbpath']   = getenv("DB_PATH") ?  getenv("DB_PATH") : "../dev.sqlite";
-
+$config['mail_from'] = getenv("MAIL_FROM");
+$config['app_name'] = getenv("APP_NAME");
 
 $app = new \Slim\App(["settings" => $config]);
 
@@ -41,7 +42,7 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
 ]));
 
 $container = $app->getContainer();
-$container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/templates/");
+$container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/templates/", ['appName' => $config['app_name']]);
 
 $container['pdo'] = function ($c) {
     $pdo = new PDO('sqlite:' + $c['settings']['dbpath']);
@@ -128,6 +129,9 @@ $app->post("/", function (Request $request, Response $response) {
     $inc = trim($data['inc']);
     if($inc == null || $inc == ''){ $inc = 'Not Provided'; }
 
+    $mail_from = $this->get('settings')['mail_from'];
+    $app_name = $this->get('settings')['app_name'];
+
     foreach($categories as $category){
         $log_msg = trim($data[$category->id]);
 
@@ -136,13 +140,12 @@ $app->post("/", function (Request $request, Response $response) {
             $entry->save();
 
             $mail = new PHPMailer(true);
-            $mail->setFrom('it.admin@llmrt.org', 'LLMRT');
-            $mail->addBCC('rgshepherd@gmail.com');
+            $mail->setFrom($mail_from, $app_name);
             $mail->addAddress($category->email);
-            $mail->addReplyTo("it.admin@llmrt.org"); 
+            $mail->addReplyTo($mail_from); 
 
-            $mail->Subject = 'LLMRT Debrief & Feedback';
-            $mail->Body    = 'New feedback message for: LLMRT - ' . $category->name . "\n\n   submitted by: " . $who . "\n   incident: " . $inc . "\n\n Message:\n" . $log_msg;
+            $mail->Subject = $app_name . ' Submission';
+            $mail->Body    = 'New submission for: ' . $app_name .' - ' . $category->name . "\n\n   submitted by: " . $who . "\n   incident: " . $inc . "\n\n Message:\n" . $log_msg;
 
             $mail->send();
 
